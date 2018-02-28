@@ -1,5 +1,7 @@
 FROM thangtd90/nginx-plus
 
+ENV WORKER_PROCESSES=2
+
 RUN rm /etc/nginx/conf.d/default.conf \
     && rm -r /etc/nginx/sites-enabled \
     && rm /etc/nginx/conf.d/upstream.conf
@@ -8,7 +10,9 @@ ADD nginx.conf /etc/nginx/nginx.conf
 ADD images.conf /etc/nginx/images.conf
 ADD entrypoint.sh /entrypoint.sh
 
-VOLUME [ "/var/www" ]
+RUN mkdir /data && chown www-data:www-data /data
+
+VOLUME [ "/var/www", "/data/www" ]
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
