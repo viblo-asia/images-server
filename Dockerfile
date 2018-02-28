@@ -10,9 +10,7 @@ ADD nginx.conf /etc/nginx/nginx.conf
 ADD images.conf /etc/nginx/images.conf
 ADD entrypoint.sh /entrypoint.sh
 
-RUN mkdir /data && chown www-data:www-data /data
-
-VOLUME [ "/var/www", "/data/www" ]
+VOLUME [ "/var/www", "/data" ]
 
 ENTRYPOINT [ "/entrypoint.sh" ]
 
