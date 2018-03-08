@@ -1,14 +1,16 @@
-FROM thangtd90/nginx-plus
+FROM nginx:stable
 
-ENV WORKER_PROCESSES=2
+RUN apt-get update && apt-get install -y libpq5
 
-RUN rm /etc/nginx/conf.d/default.conf \
-    && rm -r /etc/nginx/sites-enabled \
-    && rm /etc/nginx/conf.d/upstream.conf
+ENV WORKER_PROCESSES 2
 
-ADD nginx.conf /etc/nginx/nginx.conf
-ADD images.conf /etc/nginx/images.conf
-ADD entrypoint.sh /entrypoint.sh
+COPY modules/ngx_postgres_module.so /etc/nginx/modules/ngx_postgres_module.so
+COPY modules/ngx_http_eval_module.so /etc/nginx/modules/ngx_http_eval_module.so
+
+COPY conf.templates /etc/nginx/conf.templates
+
+COPY images.conf /etc/nginx/images.conf
+COPY entrypoint.sh /entrypoint.sh
 
 VOLUME [ "/var/www", "/data" ]
 
