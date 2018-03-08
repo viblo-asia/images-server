@@ -1,8 +1,9 @@
 #!/bin/sh
-echo "upstream database {\
-    postgres_server ${DB_HOST:-postgres} dbname=${DB_DATABASE:-viblo} user=${DB_USERNAME:-postgres} password=${DB_PASSWORD:-postgres};\
-}" > /etc/nginx/conf.d/upstream.conf
+
+envsubst < /etc/nginx/conf.templates/nginx.conf > /etc/nginx/nginx.conf
+envsubst < /etc/nginx/conf.templates/upstream.conf > /etc/nginx/conf.d/upstream.conf
 
 mkdir -p /data/www
 chown www-data:www-data /data/www
-nginx -g "worker_processes $WORKER_PROCESSES; user www-data; daemon off; pid /run/nginx.pid;"
+
+nginx -g "user www-data; daemon off; pid /run/nginx.pid;"
