@@ -1,9 +1,6 @@
 #!/bin/sh
 
-envsubst < /etc/nginx/conf.templates/nginx.conf > /etc/nginx/nginx.conf
-envsubst < /etc/nginx/conf.templates/upstream.conf > /etc/nginx/conf.d/upstream.conf
+envsubst '${WORKER_PROCESSES}' < /etc/nginx/conf.templates/nginx.conf > /etc/nginx/nginx.conf
+envsubst '${IMAGINARY_HOST}' < /etc/nginx/conf.templates/images.conf > /etc/nginx/images.conf
 
-mkdir -p /data/www
-chown www-data:www-data /data/www
-
-nginx -g "user www-data; daemon off; pid /run/nginx.pid;"
+nginx -g "daemon off; pid /run/nginx.pid;"
